@@ -89,15 +89,23 @@
     font-size:clamp(30px,7vw,46px);line-height:1.02;letter-spacing:.005em;
     text-transform:uppercase;margin:0 0 14px;
   }
-  .lede .mark{color:var(--red);position:relative;}
+  .lede .mark{color:var(--red);}
   .sub{
     font-size:clamp(15px,2.4vw,17px);color:var(--muted);
-    max-width:56ch;margin:0 0 26px;line-height:1.6;
+    max-width:58ch;margin:0 0 26px;line-height:1.6;
   }
+  .doc-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;}
   .field-label{
     font-family:var(--mono);font-size:11px;letter-spacing:.14em;
-    text-transform:uppercase;color:var(--faint);margin:0 0 8px;display:block;
+    text-transform:uppercase;color:var(--faint);margin:0;display:block;
   }
+  .attach{
+    font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--amber);border:1px solid var(--line);border-radius:6px;padding:6px 12px;transition:.15s;
+    display:flex;align-items:center;gap:7px;
+  }
+  .attach:hover{border-color:var(--amber);background:rgba(214,169,78,.06);}
+  .dropzone{position:relative;}
   .paper{
     width:100%;background:var(--inset);border:1px solid var(--line);
     border-radius:8px;color:var(--text);font-family:var(--serif);
@@ -107,6 +115,27 @@
     background-size:100% 32px;background-position:0 15px;background-attachment:local;
   }
   .paper:focus{outline:none;border-color:var(--red-deep);}
+  .paper.locked{opacity:.45;pointer-events:none;}
+  .dz-hint{
+    position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+    font-family:var(--display);letter-spacing:.16em;text-transform:uppercase;color:var(--amber);
+    background:rgba(214,169,78,.08);border:1px dashed var(--amber);border-radius:8px;
+    pointer-events:none;font-size:15px;
+  }
+  .dropzone.drag .dz-hint{display:flex;}
+  .dropzone.drag .paper{border-color:var(--amber);}
+
+  .filechip{
+    display:none;align-items:center;gap:10px;margin-top:12px;
+    background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px;
+  }
+  .filechip.on{display:flex;}
+  .filechip .fc-icon{font-size:14px;}
+  .filechip .fc-name{font-family:var(--mono);font-size:13px;color:var(--text);word-break:break-all;}
+  .filechip .fc-note{font-family:var(--mono);font-size:11px;color:var(--faint);letter-spacing:.04em;white-space:nowrap;}
+  .filechip .fc-x{margin-left:auto;color:var(--muted);font-size:18px;line-height:1;width:26px;height:26px;border-radius:5px;flex:none;}
+  .filechip .fc-x:hover{color:var(--red);background:rgba(224,75,63,.08);}
+
   .ctx{
     width:100%;background:var(--inset);border:1px solid var(--line);
     border-radius:8px;color:var(--text);font-family:var(--serif);font-size:15px;
@@ -120,10 +149,9 @@
     padding:14px 26px;border-radius:7px;transition:.15s;border:1px solid var(--red);
   }
   .runbtn:hover{background:var(--red);}
-  .runbtn:disabled{opacity:.4;cursor:not-allowed;}
-  .count{font-family:var(--mono);font-size:11px;color:var(--faint);}
+  .count{font-family:var(--mono);font-size:11px;color:var(--faint);word-break:break-all;}
   .inline-note{
-    font-family:var(--mono);font-size:12px;color:var(--amber);
+    font-family:var(--mono);font-size:12px;color:var(--amber);line-height:1.5;
     margin-top:14px;display:none;
   }
   .inline-note.on{display:block;}
@@ -155,25 +183,23 @@
     background:rgba(224,75,63,.06);align-self:flex-start;
   }
   .verdict.close{border-color:var(--amber);color:var(--amber);background:rgba(214,169,78,.06);}
-  .verdict.hold{border-color:var(--red);color:var(--red);}
-  .runstamp{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.12em;margin-top:22px;text-transform:uppercase;}
+  .runstamp{font-family:var(--mono);font-size:10px;color:var(--faint);letter-spacing:.12em;margin-top:22px;text-transform:uppercase;word-break:break-all;}
 
   .finding{border-top:1px solid var(--line);padding:24px 0;}
   .f-label{
     font-family:var(--display);font-weight:600;font-size:15px;letter-spacing:.18em;
     text-transform:uppercase;color:var(--text);display:flex;align-items:center;gap:12px;margin-bottom:14px;
   }
-  .f-label .tick{width:20px;height:2px;background:var(--red);}
+  .f-label .tick{width:20px;height:2px;background:var(--red);flex:none;}
   .f-label.amber .tick{background:var(--amber);}
 
   .exhibit{
     font-family:var(--mono);font-size:14px;line-height:1.55;color:var(--text);
     background:var(--inset);border-left:3px solid var(--red);
-    padding:14px 16px;border-radius:0 6px 6px 0;margin:0 0 14px;
+    padding:14px 16px;border-radius:0 6px 6px 0;margin:0 0 14px;white-space:pre-wrap;
   }
   .exhibit.amber{border-left-color:var(--amber);}
   .prose{font-size:15.5px;color:var(--muted);line-height:1.65;margin:0 0 10px;}
-  .prose strong{color:var(--text);font-weight:500;}
   .prose .tag{
     font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
     color:var(--red);margin-right:8px;
@@ -244,6 +270,7 @@
   @media (max-width:520px){
     .stage{padding:22px 15px 34px;}
     .verdict{transform:none;}
+    .doc-head{flex-wrap:wrap;}
   }
 </style>
 </head>
@@ -265,10 +292,25 @@
   <section class="screen on" id="setup">
     <div class="eyebrow">Adversarial pre-send pass</div>
     <h1 class="lede">Before you<br><span class="mark">hit send.</span></h1>
-    <p class="sub">Paste what you're about to send. It comes back marked up by a skeptical reviewer: the single weakest claim, the numbers you can't back, and the one question you cannot yet answer.</p>
+    <p class="sub">Paste what you're about to send, or drop in a file. It comes back marked up by a skeptical reviewer: the single weakest claim, the numbers you can't back, and the one question you cannot yet answer.</p>
 
-    <label class="field-label" for="doc">The document</label>
-    <textarea class="paper" id="doc" placeholder="Paste the document, email, memo, or argument you're about to send&hellip;"></textarea>
+    <div class="doc-head">
+      <label class="field-label" for="doc">The document</label>
+      <button class="attach" id="attachBtn" type="button"><span>&#128206;</span> Attach a file</button>
+      <input type="file" id="file" accept=".txt,.md,.markdown,.docx,.pdf" hidden>
+    </div>
+
+    <div class="dropzone" id="dropzone">
+      <textarea class="paper" id="doc" placeholder="Paste the document, email, memo, or argument &mdash; or drop a .txt, .md, .docx, or PDF here."></textarea>
+      <div class="dz-hint">Drop to load</div>
+    </div>
+
+    <div class="filechip" id="fileChip">
+      <span class="fc-icon">&#128206;</span>
+      <span class="fc-name" id="fcName"></span>
+      <span class="fc-note" id="fcNote"></span>
+      <button class="fc-x" id="fcRemove" title="Remove file" aria-label="Remove file">&times;</button>
+    </div>
 
     <label class="field-label" for="ctx" style="margin-top:16px;">What is this, and who gets it? &nbsp;(optional)</label>
     <input class="ctx" id="ctx" placeholder="e.g. a budget proposal going to the provost">
@@ -376,6 +418,9 @@ function show(id){
   window.scrollTo(0,0);
 }
 
+/* holds an attached PDF: { name, data } where data is base64 */
+var pdfDoc = null;
+
 /* ---- settings modal ---- */
 function refreshGear(){
   $('gearBtn').classList.toggle('flag', !lsGet(LS_KEY));
@@ -398,13 +443,181 @@ $('modalSave').addEventListener('click', function(){
 $('overlay').addEventListener('click', function(e){ if(e.target === $('overlay')) closeModal(); });
 document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
 
-/* ---- word count ---- */
+/* ---- notes + word count ---- */
+function note(msg){ var n = $('note'); n.textContent = msg; n.classList.add('on'); }
+function clearNote(){ $('note').classList.remove('on'); }
+
 function wordCount(t){
   var m = t.trim().match(/\S+/g);
   return m ? m.length : 0;
 }
-$('doc').addEventListener('input', function(){
-  $('count').textContent = wordCount($('doc').value) + ' words';
+function updateCount(){
+  if(pdfDoc){ $('count').textContent = pdfDoc.name; }
+  else { $('count').textContent = wordCount($('doc').value) + ' words'; }
+}
+$('doc').addEventListener('input', updateCount);
+
+/* ---- file handling ---- */
+function extOf(name){
+  var m = /\.([a-z0-9]+)$/i.exec(name || '');
+  return m ? m[1].toLowerCase() : '';
+}
+function setChip(name, noteTxt){
+  $('fcName').textContent = name;
+  $('fcNote').textContent = noteTxt;
+  $('fileChip').classList.add('on');
+}
+function clearFile(){
+  pdfDoc = null;
+  $('fileChip').classList.remove('on');
+  $('doc').classList.remove('locked');
+  $('doc').disabled = false;
+  $('file').value = '';
+  updateCount();
+}
+$('fcRemove').addEventListener('click', clearFile);
+
+function fileToBase64(file){
+  return new Promise(function(resolve, reject){
+    var r = new FileReader();
+    r.onload = function(){ resolve(String(r.result).split(',')[1] || ''); };
+    r.onerror = function(){ reject(new Error('read')); };
+    r.readAsDataURL(file);
+  });
+}
+
+/* inflate a raw DEFLATE stream using the browser's built-in DecompressionStream */
+async function inflateRaw(bytes){
+  if(typeof DecompressionStream === 'undefined'){ throw new Error('no-decompress'); }
+  var ds = new DecompressionStream('deflate-raw');
+  var stream = new Blob([bytes]).stream().pipeThrough(ds);
+  var ab = await new Response(stream).arrayBuffer();
+  return new Uint8Array(ab);
+}
+
+/* pull readable text out of a .docx (a ZIP of XML), no external library */
+async function docxToText(arrayBuffer){
+  var buf = new Uint8Array(arrayBuffer);
+  var dv = new DataView(arrayBuffer);
+  if(buf.length < 22){ throw new Error('too-small'); }
+
+  var eocd = -1;
+  for(var i = buf.length - 22; i >= 0; i--){
+    if(dv.getUint32(i, true) === 0x06054b50){ eocd = i; break; }
+  }
+  if(eocd < 0){ throw new Error('not-zip'); }
+
+  var cdCount = dv.getUint16(eocd + 10, true);
+  var cdOffset = dv.getUint32(eocd + 16, true);
+  var p = cdOffset;
+  var found = null;
+  for(var n = 0; n < cdCount; n++){
+    if(dv.getUint32(p, true) !== 0x02014b50){ break; }
+    var comp = dv.getUint16(p + 10, true);
+    var compSize = dv.getUint32(p + 20, true);
+    var nameLen = dv.getUint16(p + 28, true);
+    var extraLen = dv.getUint16(p + 30, true);
+    var commentLen = dv.getUint16(p + 32, true);
+    var localOffset = dv.getUint32(p + 42, true);
+    var name = new TextDecoder().decode(buf.subarray(p + 46, p + 46 + nameLen));
+    if(name === 'word/document.xml'){ found = { comp: comp, size: compSize, offset: localOffset }; }
+    p += 46 + nameLen + extraLen + commentLen;
+  }
+  if(!found){ throw new Error('no-doc-xml'); }
+
+  if(dv.getUint32(found.offset, true) !== 0x04034b50){ throw new Error('bad-header'); }
+  var lNameLen = dv.getUint16(found.offset + 26, true);
+  var lExtraLen = dv.getUint16(found.offset + 28, true);
+  var dataStart = found.offset + 30 + lNameLen + lExtraLen;
+  var compData = buf.subarray(dataStart, dataStart + found.size);
+
+  var xmlBytes;
+  if(found.comp === 0){ xmlBytes = compData; }
+  else if(found.comp === 8){ xmlBytes = await inflateRaw(compData); }
+  else { throw new Error('unsupported-compression'); }
+
+  var xml = new TextDecoder().decode(xmlBytes);
+  return xmlToText(xml);
+}
+
+function xmlToText(xml){
+  var t = xml;
+  t = t.replace(/<\/w:p>/g, '\n');
+  t = t.replace(/<w:tab\b[^>]*\/>/g, '\t');
+  t = t.replace(/<w:br\b[^>]*\/?>/g, '\n');
+  t = t.replace(/<[^>]+>/g, '');
+  t = t.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+       .replace(/&quot;/g, '"').replace(/&apos;/g, "'");
+  t = t.replace(/\n{3,}/g, '\n\n').trim();
+  return t;
+}
+
+function loadText(text, name){
+  clearFile();
+  $('doc').value = text.trim();
+  updateCount();
+  note('Loaded ' + name + ' \u2014 ' + wordCount(text) + ' words. Edit it before you run if you like.');
+}
+
+async function handleFile(file){
+  if(!file){ return; }
+  clearNote();
+  var ext = extOf(file.name);
+  try {
+    if(ext === 'pdf'){
+      if(file.size > 22 * 1024 * 1024){
+        note('That PDF is over 22 MB. Try a smaller file, or paste the text.');
+        return;
+      }
+      var b64 = await fileToBase64(file);
+      pdfDoc = { name: file.name, data: b64 };
+      $('doc').value = '';
+      $('doc').classList.add('locked');
+      $('doc').disabled = true;
+      setChip(file.name, 'PDF \u00b7 reviewed as-is');
+      updateCount();
+    } else if(ext === 'txt' || ext === 'md' || ext === 'markdown'){
+      var text = await file.text();
+      loadText(text, file.name);
+    } else if(ext === 'docx'){
+      var buf = await file.arrayBuffer();
+      var out = await docxToText(buf);
+      if(!out){ note('That .docx had no readable text. Try pasting it instead.'); return; }
+      loadText(out, file.name);
+    } else if(ext === 'doc'){
+      note('Old .doc files can\u2019t be read here. Save it as .docx or PDF, or paste the text.');
+    } else {
+      note('Use a .txt, .md, .docx, or PDF file \u2014 or paste the text.');
+    }
+  } catch(err){
+    if(err && err.message === 'no-decompress'){
+      note('This browser can\u2019t unpack .docx files. Paste the text or upload a PDF instead.');
+    } else {
+      note('Couldn\u2019t read that file. Try pasting the text instead.');
+    }
+  }
+}
+
+$('attachBtn').addEventListener('click', function(){ $('file').click(); });
+$('file').addEventListener('change', function(e){
+  var f = e.target.files && e.target.files[0];
+  if(f){ handleFile(f); }
+});
+
+/* drag and drop onto the document area */
+var dz = $('dropzone');
+['dragenter','dragover'].forEach(function(ev){
+  dz.addEventListener(ev, function(e){ e.preventDefault(); dz.classList.add('drag'); });
+});
+dz.addEventListener('dragleave', function(e){
+  if(e.relatedTarget && dz.contains(e.relatedTarget)){ return; }
+  dz.classList.remove('drag');
+});
+dz.addEventListener('drop', function(e){
+  e.preventDefault();
+  dz.classList.remove('drag');
+  var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+  if(f){ handleFile(f); }
 });
 
 /* ---- loading copy rotation ---- */
@@ -444,51 +657,57 @@ var SYSTEM_PROMPT =
 "- Be specific to THIS document. No generic writing advice. If the material is too thin to attack, say so plainly in the read.\n" +
 "- Blunt, precise, useful. No flattery, no hedging, no closing pep talk.";
 
-function buildUserContent(doc, ctx){
-  var c = ctx.trim() ? ctx.trim() : 'none provided';
-  return "CONTEXT (what this is and who it goes to): " + c +
-    "\n\nDOCUMENT TO RED TEAM:\n\n" + doc.trim();
+function contextLine(ctx){
+  return "CONTEXT (what this is and who it goes to): " + (ctx.trim() ? ctx.trim() : 'none provided');
+}
+function buildTextContent(doc, ctx){
+  return contextLine(ctx) + "\n\nDOCUMENT TO RED TEAM:\n\n" + doc.trim();
+}
+function buildPdfContent(ctx){
+  return [
+    { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: pdfDoc.data } },
+    { type: 'text', text: contextLine(ctx) + "\n\nThe document to red team is the attached PDF. Read it and apply the review." }
+  ];
 }
 
 function extractJson(text){
-  var t = text.replace(/```json/gi,'').replace(/```/g,'').trim();
+  var t = text.replace(/```json/gi, '').replace(/```/g, '').trim();
   var start = t.indexOf('{');
   var end = t.lastIndexOf('}');
-  if(start !== -1 && end !== -1 && end > start){
-    t = t.slice(start, end + 1);
-  }
+  if(start !== -1 && end !== -1 && end > start){ t = t.slice(start, end + 1); }
   return JSON.parse(t);
 }
 
 async function runReview(){
   var key = lsGet(LS_KEY);
   if(!key){ openModal(); return; }
+
+  var usingPdf = !!pdfDoc;
   var doc = $('doc').value;
-  if(wordCount(doc) < 8){
-    var n = $('note');
-    n.textContent = 'Give it a bit more to work with \u2014 at least a short paragraph.';
-    n.classList.add('on');
+  if(!usingPdf && wordCount(doc) < 8){
+    note('Give it a bit more to work with \u2014 at least a short paragraph, or attach a file.');
     return;
   }
-  $('note').classList.remove('on');
+  clearNote();
 
   show('loading');
   startLoadRotation();
 
   try {
+    var content = usingPdf ? buildPdfContent($('ctx').value) : buildTextContent(doc, $('ctx').value);
     var res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':key,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': key,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
       },
       body: JSON.stringify({
         model: CLAUDE_MODEL,
         max_tokens: 1600,
         system: SYSTEM_PROMPT,
-        messages: [ { role:'user', content: buildUserContent(doc, $('ctx').value) } ]
+        messages: [ { role: 'user', content: content } ]
       })
     });
 
@@ -530,7 +749,7 @@ async function runReview(){
 
 function esc(s){
   return String(s == null ? '' : s)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 function renderResults(d){
@@ -538,15 +757,15 @@ function renderResults(d){
 
   var v = $('verdict');
   var sr = (d.sendReady || 'hold').toLowerCase();
-  v.classList.remove('close','hold');
+  v.classList.remove('close');
   var label = 'HOLD';
   if(sr === 'close'){ label = 'CLOSE'; v.classList.add('close'); }
-  else if(sr === 'not yet'){ label = 'NOT YET'; v.classList.add('hold'); }
-  else { label = 'HOLD'; v.classList.add('hold'); }
+  else if(sr === 'not yet'){ label = 'NOT YET'; }
+  else { label = 'HOLD'; }
   v.textContent = label;
 
   var name = lsGet(LS_NAME);
-  var when = new Date().toLocaleString([], {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'});
+  var when = new Date().toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
   $('runstamp').textContent = 'Reviewed ' + when + (name ? ' \u00b7 ' + name : '');
 
   var wc = d.weakestClaim || {};
@@ -563,13 +782,13 @@ function renderResults(d){
     e.textContent = 'No unsupported numbers flagged.';
     list.appendChild(e);
   } else {
-    nums.forEach(function(n){
+    nums.forEach(function(nm){
       var row = document.createElement('div');
       row.className = 'numrow';
       row.innerHTML =
-        '<div class="fig">' + esc(n.figure || '\u2014') + '</div>' +
-        '<p class="prose"><span class="tag">Problem</span>' + esc(n.problem || '') + '</p>' +
-        '<p class="prose fix"><span class="tag">Needs</span>' + esc(n.needs || '') + '</p>';
+        '<div class="fig">' + esc(nm.figure || '\u2014') + '</div>' +
+        '<p class="prose"><span class="tag">Problem</span>' + esc(nm.problem || '') + '</p>' +
+        '<p class="prose fix"><span class="tag">Needs</span>' + esc(nm.needs || '') + '</p>';
       list.appendChild(row);
     });
   }
@@ -591,11 +810,19 @@ function showError(title, msgHtml){
 $('runBtn').addEventListener('click', runReview);
 $('againBtn').addEventListener('click', runReview);
 $('errRetry').addEventListener('click', runReview);
-$('newBtn').addEventListener('click', function(){ show('setup'); });
+$('newBtn').addEventListener('click', function(){
+  clearFile();
+  $('doc').value = '';
+  $('ctx').value = '';
+  clearNote();
+  updateCount();
+  show('setup');
+});
 $('errBack').addEventListener('click', function(){ show('setup'); });
 
 /* ---- init ---- */
 refreshGear();
+updateCount();
 </script>
 </body>
 </html>
