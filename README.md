@@ -2,7 +2,7 @@
 
 **Live:** https://augustineiacopelli.github.io/appaday-078-red-team-this/
 
-An adversarial pre-send pass, turned into a tool. Paste a document, email, memo, or argument before you send it, and Claude reads it like a hostile-but-fair reviewer whose only job is to find where it is most exposed. It returns three things and nothing else: the single weakest load-bearing claim with why it collapses and what would shore it up, every number or vague quantifier you cannot yet back, and the one hardest question a skeptical reader opens with.
+An adversarial pre-send pass, turned into a tool. Paste or upload a document, email, memo, or argument before you send it, and Claude reads it like a hostile-but-fair reviewer whose only job is to find where it is most exposed. It returns three things and nothing else: the single weakest load-bearing claim with why it collapses and what would shore it up, every number or vague quantifier you cannot yet back, and the one hardest question a skeptical reader opens with.
 
 Part of the [AppADay](https://augustineiacopelli.github.io/appaday/) project.
 
@@ -23,9 +23,11 @@ The point is to fail privately now so you do not fail publicly later.
 ## How to use it
 
 1. Open the Settings gear and paste your Anthropic API key. Add a reviewer name if you like. Both stay in your browser's localStorage and are sent nowhere but Anthropic.
-2. Paste the document and, optionally, a line of context.
+2. Paste the document, or attach a file by clicking **Attach a file** or dropping one onto the field. Add a line of context if it helps.
 3. Press **Red team it**.
 4. Read the markup, fix what it found, and run it again until the verdict moves.
+
+Supported file types are `.txt`, `.md`, `.docx`, and `.pdf`. Text, Markdown, and Word files are extracted into the editable field so you can trim them before running. PDFs are sent to the reviewer as-is.
 
 ---
 
@@ -33,6 +35,7 @@ The point is to fail privately now so you do not fail publicly later.
 
 - Single-file vanilla HTML, CSS, and JavaScript. No frameworks, no build step, no dependencies beyond Google Fonts.
 - AI features call the Anthropic Messages API directly from the browser using `const CLAUDE_MODEL = 'claude-sonnet-5'` and the `anthropic-dangerous-direct-browser-access` header, with the user's own key.
+- File upload is dependency-free. Word `.docx` files are unzipped in the browser by reading the ZIP central directory and inflating `word/document.xml` with the built-in `DecompressionStream`, then stripping the markup to text. PDFs are passed to the Messages API as a base64 document block. Nothing is uploaded to any third party.
 - The reviewer returns strict JSON against a fixed schema; the app strips any stray fencing, parses defensively, and renders clean in-voice error states for a rejected key, rate limiting, network failure, or an unparseable reply.
 - Editor's-desk visual language on cool graphite: Oswald for condensed labels, Newsreader for the reviewer's prose, JetBrains Mono for extracted claims and figures set as exhibits. Red is a restrained editorial mark with amber as a second signal.
 - Fully responsive down to a 375px viewport, visible keyboard focus, and reduced-motion respected.
