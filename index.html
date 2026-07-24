@@ -705,7 +705,7 @@ async function runReview(){
       },
       body: JSON.stringify({
         model: CLAUDE_MODEL,
-        max_tokens: 1600,
+        max_tokens: 4096,
         system: SYSTEM_PROMPT,
         messages: [ { role: 'user', content: content } ]
       })
@@ -735,7 +735,11 @@ async function runReview(){
     try { parsed = extractJson(text); }
     catch(pe){
       stopLoadRotation();
-      showError('Couldn\u2019t read the review', 'The reviewer replied but not in a form this app could parse. Run it again \u2014 it usually clears on a second pass.');
+      if(data.stop_reason === 'max_tokens'){
+        showError('The review ran long', 'This document produced more findings than fit in a single reply, so it was cut off before it could be read. Try a shorter section, or run it again.');
+      } else {
+        showError('Couldn\u2019t read the review', 'The reviewer replied but not in a form this app could parse. Run it again \u2014 it usually clears on a second pass.');
+      }
       return;
     }
 
