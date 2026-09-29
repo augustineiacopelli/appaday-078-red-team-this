@@ -404,7 +404,7 @@
 </div>
 
 <script>
-const CLAUDE_MODEL = 'claude-sonnet-5';
+const CLAUDE_MODEL = await getModel();
 const LS_KEY = 'redteam078_key';
 const LS_NAME = 'redteam078_name';
 
@@ -827,6 +827,17 @@ $('errBack').addEventListener('click', function(){ show('setup'); });
 /* ---- init ---- */
 refreshGear();
 updateCount();
+
+async function getModel(tier = 'sonnet') {
+  try {
+    const response = await fetch('../config.json');
+    const config = await response.json();
+    return config.models[tier];
+  } catch {
+    return 'claude-sonnet-5-5';
+  }
+}
 </script>
 </body>
 </html>
+
