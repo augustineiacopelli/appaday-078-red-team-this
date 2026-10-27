@@ -34,7 +34,7 @@ Supported file types are `.txt`, `.md`, `.docx`, and `.pdf`. Text, Markdown, and
 ## Technical notes
 
 - Single-file vanilla HTML, CSS, and JavaScript. No frameworks, no build step, no dependencies beyond Google Fonts.
-- AI features call the Anthropic Messages API directly from the browser using `const CLAUDE_MODEL = 'claude-sonnet-5'` and the `anthropic-dangerous-direct-browser-access` header, with the user's own key.
+- AI features call the Anthropic Messages API directly from the browser using the current Claude Sonnet model and the `anthropic-dangerous-direct-browser-access` header, with the user's own key.
 - File upload is dependency-free. Word `.docx` files are unzipped in the browser by reading the ZIP central directory and inflating `word/document.xml` with the built-in `DecompressionStream`, then stripping the markup to text. PDFs are passed to the Messages API as a base64 document block. Nothing is uploaded to any third party.
 - The reviewer returns strict JSON against a fixed schema; the app strips any stray fencing, parses defensively, and renders clean in-voice error states for a rejected key, rate limiting, network failure, or an unparseable reply.
 - Editor's-desk visual language on cool graphite: Oswald for condensed labels, Newsreader for the reviewer's prose, JetBrains Mono for extracted claims and figures set as exhibits. Red is a restrained editorial mark with amber as a second signal.

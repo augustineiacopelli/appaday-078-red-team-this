@@ -10,6 +10,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link rel="manifest" href="https://augustineiacopelli.github.io/appaday/manifests/078.webmanifest">
 <script src="https://augustineiacopelli.github.io/appaday/save.js" defer></script>
+<script src="https://augustineiacopelli.github.io/appaday/models.js"></script>
+<script src="https://augustineiacopelli.github.io/appaday/keys.js" data-app="078" data-legacy-key="redteam078_key" data-accent="#C8401A" defer></script>
 <title>Red Team This | AppADay 078</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -394,11 +396,7 @@
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
     <h2 id="mTitle">Settings</h2>
     <p class="hint">Your key stays in this browser only. It is never sent anywhere but Anthropic.</p>
-    <label>
-      <span class="field-label">Anthropic API key</span>
-      <input id="keyInput" type="password" placeholder="sk-ant-&hellip;" autocomplete="off">
-    </label>
-    <div class="keylink">Get one at <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a></div>
+    <div id="keyMount"><p class="hint">The key manager is loading. If this stays, check your connection and reload.</p></div>
     <label>
       <span class="field-label">Reviewer name &nbsp;(optional)</span>
       <input id="nameInput" type="text" placeholder="Who's running the pass?" autocomplete="off">
@@ -411,8 +409,7 @@
 </div>
 
 <script>
-const CLAUDE_MODEL = await getModel();
-const LS_KEY = 'redteam078_key';
+let CLAUDE_MODEL = (window.AppModels ? window.AppModels.id('sonnet') : '');
 const LS_NAME = 'redteam078_name';
 
 function lsGet(k){ try { return localStorage.getItem(k) || ''; } catch(e){ return ''; } }
@@ -430,19 +427,19 @@ var pdfDoc = null;
 
 /* ---- settings modal ---- */
 function refreshGear(){
-  $('gearBtn').classList.toggle('flag', !lsGet(LS_KEY));
+  $('gearBtn').classList.toggle('flag', !(window.AppKeys && window.AppKeys.has()));
 }
+window.addEventListener('appaday:keychange', refreshGear);
+document.addEventListener('DOMContentLoaded', refreshGear);
 function openModal(){
-  $('keyInput').value = lsGet(LS_KEY);
+  if(window.AppKeys) window.AppKeys.mountSettings($('keyMount'));
   $('nameInput').value = lsGet(LS_NAME);
   $('overlay').classList.add('on');
-  $('keyInput').focus();
 }
 function closeModal(){ $('overlay').classList.remove('on'); }
 $('gearBtn').addEventListener('click', openModal);
 $('modalCancel').addEventListener('click', closeModal);
 $('modalSave').addEventListener('click', function(){
-  lsSet(LS_KEY, $('keyInput').value.trim());
   lsSet(LS_NAME, $('nameInput').value.trim());
   refreshGear();
   closeModal();
@@ -686,8 +683,9 @@ function extractJson(text){
 }
 
 async function runReview(){
-  var key = lsGet(LS_KEY);
-  if(!key){ openModal(); return; }
+  if(!window.AppKeys){ note('The key manager did not load. Check your connection and reload.'); return; }
+  var key = await window.AppKeys.get();
+  if(!key){ note('Add your Claude API key with the gear button to run a pass.'); return; }
 
   var usingPdf = !!pdfDoc;
   var doc = $('doc').value;
@@ -835,15 +833,6 @@ $('errBack').addEventListener('click', function(){ show('setup'); });
 refreshGear();
 updateCount();
 
-async function getModel(tier = 'sonnet') {
-  try {
-    const response = await fetch('../config.json');
-    const config = await response.json();
-    return config.models[tier];
-  } catch {
-    return 'claude-sonnet-5-5';
-  }
-}
 </script>
 </body>
 </html>
